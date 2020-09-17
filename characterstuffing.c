@@ -1,83 +1,47 @@
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
+#include<string.h>
 
-int main() {
-	char header[10];
-	char trailer[10];
-	char ch[100];
-	char add[10];
-	char out[100];
-	char esc[] = "esc";
-	int k = 0;
-	printf("Enter the characters :");
-	scanf("%s", ch);
-	printf("Enter a charcter that represents starting delimiter:");
-	scanf("%s", header);
-	printf("Enter a character that represents ending delimiter:");
-	scanf("%s", trailer);
-	printf("Enter a character that is to be stuffed:");
-	scanf("%s", add);
+int main(){
+    char startDeli, endDeli;
+    char escChar[] = "esc";
+    int size,i = 0,j = 0;
+    
+    printf("Enter the size of input: ");
+    scanf("%d",&size);
 
-	for (int i = 0; i <strlen(header); i++) {
-		out[k] = header[i];
-		k++;
-	}
+    int outSize = size*3;
+    char *input = malloc(size*sizeof(char));
+    char *output = malloc(outSize*sizeof(char));
 
-	for (int i = 0; i < strlen(ch); i++) {
-		int count = 0;
-		for (int j = i, l = 0; j < (i + strlen(header)); j++,l++) {
-			if (ch[j] == header[l]) {
-				count++;
-			} else {
-				break;
-			}
-		}
-		if (count == strlen(header)) {
-			for (int m = 0; m < strlen(add); m++) {
-				out[k] = add[m];
-				k++;
-			}
-		}
-		count = 0;
-		for (int j = i, l = 0; j < (i + strlen(trailer)); j++,l++) {
-                        if (ch[j] == trailer[l]) {
-                                count++;
-                        } else {
-                                break;
-                        }
-                }
-                if (count == strlen(trailer)) {
-                        for (int m = 0; m < strlen(add); m++) {
-                                out[k] = add[m];
-                                k++;
-                        }
-                }
-		count = 0;
-		for (int j = i, l = 0; j < (i + strlen(esc)); j++,l++) {
-                        if (ch[j] == esc[l]) {
-                                count++;
-                        } else {
-                                break;
-                        }
-                }
-                if (count == strlen(esc)) {
-                        for (int m = 0; m < strlen(add); m++) {
-                                out[k] = add[m];
-                                k++;
-                        }
-                }
-		 
-		out[k] = ch[i];
-		k++;
-	}
-
-	for (int i = 0; i <strlen(trailer); i++) {
-                out[k] = trailer[i];
-                k++;
+    printf("Enter the input: ");
+    scanf("%s",input);
+    getchar();
+    printf("Enter the starting delimiter: ");
+    scanf("%c",&startDeli);
+    getchar();
+    printf("Enter the ending delimiter: ");
+    scanf("%c",&endDeli);
+    getchar();
+   
+    output[j] = startDeli;
+    j++;
+    
+    while(i < size){
+        if(input[i] != startDeli && input[i] != endDeli){
+            output[j] = input[i];
+            j++;
         }
-	
-	out[k] = '\0';
+        else{
+            strcat(output,escChar);
+            j = j+3;
+            output[j] = input[i];
+            j++;
+        }
+        i++;
+    }
 
-	printf("\nAfter Stuffing: %s\n", out);
-	return 0;
+    strcat(output,&endDeli);
+    printf("The output is : %s\n",output);
+    return 0;
 }
